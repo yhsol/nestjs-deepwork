@@ -14,6 +14,10 @@ export class TasksService {
     private taskRepository: TaskRepository,
   ) {}
   // private tasks: Task[] = [];
+
+  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.taskRepository.getTasks(filterDto);
+  }
   // getTasks(): Task[] {
   //   return this.tasks;
   // }
@@ -63,11 +67,25 @@ export class TasksService {
   //   this.tasks.push(task);
   //   return task;
   // }
+
+  async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await task.save();
+    return task;
+  }
   // updateTaskById(id: string, status: TaskStatus): Task {
   //   const task = this.getTaskById(id);
   //   task.status = status;
   //   return task;
   // }
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.taskRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Tasks with ID: ${id} is not found`);
+    }
+  }
   // deleteTaskById(id: string): void {
   //   const found = this.getTaskById(id);
   //   this.tasks = this.tasks.filter(task => task.id !== found.id);
