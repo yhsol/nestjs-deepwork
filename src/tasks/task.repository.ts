@@ -30,7 +30,7 @@ export class TaskRepository extends Repository<Task> {
     const task = new Task();
     task.title = title;
     task.desc = desc;
-    task.status = TaskStatus.OPEN;
+    // task.status = TaskStatus.OPEN;
     await task.save();
 
     return task;
