@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.model';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -12,9 +13,8 @@ export class TasksController {
   }
 
   @Post()
-  // post 요청의 body 값을 가져오기 위해 @Body 사용
-  createTask(@Body() body: Task): Task {
-    const { title, desc } = body;
-    return this.tasksService.createTask(title, desc);
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    // const { title, desc } = createTaskDto;
+    return this.tasksService.createTask(createTaskDto);
   }
 }

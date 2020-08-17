@@ -208,3 +208,19 @@ export class ForumModule {}
 
   - interface 와 class 로 구현 가능
   - class 는 객체 기반의 blueprint 를 그리기 좋다.
+
+- DTO
+
+  - "A DTO is an object that defines how the data will be sent over the network." - NestJs Documentation
+  - Model 과 비슷한듯? 한데 다르다고 한다. 중요! 하다고 한다.
+  - 객체의 형태를 정의해두는 것인 듯.
+  - 어떤 행위를 정의해두지 않고, 어떤 행위가 일어나거나 할 때 해당 data 의 shape 을 정의해두는 역할인듯 하다.
+  - createTask 라고 하면 create 하는 행위를 갖고있는것이 아니라 create 되는 Task 의 shape 을 갖는것.
+  - classes 또는 interface 로 가능.
+  - 그렇지만 classes 가 권장됨
+    - interface 는 typescript 의 영역. 컴파일 문제
+    - 좀 더 기능이 많다.
+    - javascript. 컴파일에 유리
+    - NestJs 는 interface 는 run-time 에 참조 불가, classes 는 가능.
+  - 쉽게 생각하면 type 정의라고 생각할 수도 있을 듯. 객체의 type 정의.
+  - 더 확장되고 유용하다고 하는데 아직은 type 정의 정도의 느낌이고, 또 type 정의와 같이 사용가능하다.
