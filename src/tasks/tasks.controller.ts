@@ -1,58 +1,22 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Patch,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { Task, TaskStatus } from './task.model';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { TaskStatusValidationPipe } from './task-status-validation.pipe';
+import { Task } from './task.model';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getTasks(
-    @Query(ValidationPipe) getTasksFilterDto: GetTasksFilterDto,
-  ): Task[] {
-    console.log('getTasksFilter: ', getTasksFilterDto);
-    if (Object.keys(getTasksFilterDto).length) {
-      return this.tasksService.getTasksWithFilter(getTasksFilterDto);
-    } else {
-      return this.tasksService.getTasks();
-    }
-  }
-
-  @Get('/:id')
-  getTaskById(@Param('id') id: string): Task {
-    return this.tasksService.getTaskById(id);
+  getAllTasks(): Task[] {
+    return this.tasksService.getAllTasks();
   }
 
   @Post()
-  @UsePipes(ValidationPipe)
-  createTask(@Body() createTaskDto: CreateTaskDto): Task {
-    return this.tasksService.createTask(createTaskDto);
-  }
+  // post 요청의 body 값을 가져오기 위해 @Body 사용
+  createTask(@Body() body: Task): Task {
+    console.log(body);
 
-  @Patch('/:id/update')
-  updateTaskById(
-    @Param('id') id: string,
-    @Body('status', TaskStatusValidationPipe) status: TaskStatus,
-  ): Task {
-    return this.tasksService.updateTaskById(id, status);
-  }
-
-  @Delete('/:id')
-  deleteTasksById(@Param('id') id: string): void {
-    this.tasksService.deleteTaskById(id);
+    const { title, desc } = body;
+    return this.tasksService.createTask(title, desc);
   }
 }
