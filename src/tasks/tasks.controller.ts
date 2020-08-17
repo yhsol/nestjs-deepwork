@@ -14,8 +14,6 @@ export class TasksController {
   @Post()
   // post 요청의 body 값을 가져오기 위해 @Body 사용
   createTask(@Body() body: Task): Task {
-    console.log(body);
-
     const { title, desc } = body;
     return this.tasksService.createTask(title, desc);
   }
