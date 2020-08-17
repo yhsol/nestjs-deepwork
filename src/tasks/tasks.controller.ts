@@ -38,6 +38,7 @@ export class TasksController {
   }
 
   @Patch('/:id/status')
+  // @Patch('/status/:id') 으로도 사용 가능.
   updateTask(
     @Param('id') id: string,
     @Body('status') status: TaskStatus,

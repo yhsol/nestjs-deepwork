@@ -179,6 +179,37 @@ export class ForumModule {}
   }
   ```
 
+  - @Delete()
+
+    - get 과 비슷하게 param 을 지정해서 사용한다.
+
+```
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): void {
+    return this.tasksService.deleteTask(id);
+  }
+```
+
+- @Patch()
+  - param 과 body 를 둘다 사용한다.
+  - id 를 param 으로 받고, 그 뒤에 해당 메서드의 정보를 전달할 path 를 설정한다.
+  - 그리고 전달할 정보를 body 에 담는다.
+
+```
+  @Patch('/:id/status')
+  updateTask(
+    @Param('id') id: string,
+    @Body('status') status: TaskStatus,
+  ): Task {
+    return this.tasksService.changeStatus(id, status);
+  }
+```
+
+- 코드를 보면, @Patch() 안에 id 값을 전달받고, 그 뒤에 해당 메서드가 status 에 관한 것이라는 것을 명시한다.
+- 그러면 id/status 로 구성된 path 로의 요청이 이 메서드로 전달되고, id 값은 param 으로, status 값은 body 로 전달받아서 Service 로 전달한다.
+- @Patch() 안의 순서는 변경 가능. @Patch("/status/:id") 로 작성해서 status 라는 것을 먼저 명시하고, 그 뒤에 id 값을 전달받아도 된다.
+- 각 메서드안의 값은 말그대로 Path 값인것.
+
 - Providers
 
   - constuctors 로 injected 할 수 있다. (Service 등을 정의 하고, Providers 에 지정하여 Controller 등에서 constructor 로 전달받아 사용 가능)
