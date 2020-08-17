@@ -40,8 +40,13 @@ export class TasksService {
     return task;
   }
 
-  deleteTask(id: string): string {
+  deleteTask(id: string): void {
     this.tasks = this.tasks.filter(task => task.id !== id);
-    return `${id} is deleted!`;
+  }
+
+  changeStatus(id: string, status: TaskStatus): Task {
+    const task = this.getTaskById(id);
+    task.status = status;
+    return task;
   }
 }
