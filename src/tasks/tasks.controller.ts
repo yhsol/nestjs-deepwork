@@ -37,10 +37,10 @@ export class TasksController {
     return this.tasksService.deleteTask(id);
   }
 
-  @Patch('/:id/:status')
+  @Patch('/:id/status')
   updateTask(
     @Param('id') id: string,
-    @Param('status') status: TaskStatus,
+    @Body('status') status: TaskStatus,
   ): Task {
     return this.tasksService.changeStatus(id, status);
   }
