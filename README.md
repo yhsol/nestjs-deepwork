@@ -147,6 +147,16 @@ export class ForumModule {}
     @Get(), @Post(), @Delete()
   - Module 에서 import 해서 사용
   - Mobx 의 Repository 와 비슷한듯. (HTTP 통신 로직을 갖고있다는 점에서 비슷하기는 한데 좀 다른 느낌이다. 조금 더 봐야할 듯.)
+
+  - @Get()
+    - get 메서드
+    - 특정 값을 param 으로 활용해서 활용하려는 경우 @Param() 데코레이터를 사용하여 쓸 수 있다. 이때 @Get() 과 @Param() 데코레이터 안에 해당 param 에 대한 정보를 전달한다.
+    ```
+    @Get('/:id')
+    getTaskById(@Param('id') id: string): Task {
+    return this.tasksService.getTaskById(id);
+    }
+    ```
   - @Body()
     - post 와 같이 body 가 포함되는 요청의 경우 @Body() 를 사용하여 body 로 들어오는 값을 사용한다.
     - 혹은 특정 값을 명시해서 사용할 수도 있다.
@@ -224,3 +234,7 @@ export class ForumModule {}
     - NestJs 는 interface 는 run-time 에 참조 불가, classes 는 가능.
   - 쉽게 생각하면 type 정의라고 생각할 수도 있을 듯. 객체의 type 정의.
   - 더 확장되고 유용하다고 하는데 아직은 type 정의 정도의 느낌이고, 또 type 정의와 같이 사용가능하다.
+
+- 작업 과정
+  - 기본 구조를 설정한다.
+  - 기본 구조가 잡히고 기능 개발을 시작하게 되면 Service 를 정의하고, Controller 에서 연결한다.

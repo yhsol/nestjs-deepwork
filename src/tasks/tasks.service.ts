@@ -13,6 +13,13 @@ export class TasksService {
     return this.tasks;
   }
 
+  getTaskById(id: string): Task {
+    // find task in tasks and return task
+    // const task: Task = this.tasks.filter(item => item.id === id)[0];
+    const task: Task = this.tasks.find(task => task.id === id);
+    return task;
+  }
+
   createTask(createTaskDto: CreateTaskDto): Task {
     // parameter 를 활용해서 task 구성
 
@@ -31,5 +38,10 @@ export class TasksService {
     // 생성한 task 를 리턴
     // 생성한 task 를 리턴함으로써 다시 한번 생성 된 task 를 확인할 수 있음.
     return task;
+  }
+
+  deleteTask(id: string): string {
+    this.tasks = this.tasks.filter(task => task.id !== id);
+    return `${id} is deleted!`;
   }
 }
