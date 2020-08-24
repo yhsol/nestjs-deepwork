@@ -149,39 +149,57 @@ export class ForumModule {}
   - Mobx 의 Repository 와 비슷한듯. (HTTP 통신 로직을 갖고있다는 점에서 비슷하기는 한데 좀 다른 느낌이다. 조금 더 봐야할 듯.)
 
   - @Get()
+
     - get 메서드
-    - 특정 값을 param 으로 활용해서 활용하려는 경우 @Param() 데코레이터를 사용하여 쓸 수 있다. 이때 @Get() 과 @Param() 데코레이터 안에 해당 param 에 대한 정보를 전달한다.
+    - @Param
+      특정 값을 param 으로 활용해서 활용하려는 경우 @Param() 데코레이터를 사용하여 쓸 수 있다. 이때 @Get() 과 @Param() 데코레이터 안에 해당 param 에 대한 정보를 전달한다.
+
     ```
     @Get('/:id')
     getTaskById(@Param('id') id: string): Task {
     return this.tasksService.getTaskById(id);
     }
     ```
-  - @Body()
-    - post 와 같이 body 가 포함되는 요청의 경우 @Body() 를 사용하여 body 로 들어오는 값을 사용한다.
-    - 혹은 특정 값을 명시해서 사용할 수도 있다.
 
-  ```
+    - @Query
+      query 값을 쓸 경우 @Query() 를 사용한다.
+      http://localhost:3000/tasks?status=OPEN&search=title5 와 같이 쓸 경우,
+      객체에 담겨 값이 들어오게 된다.
+
+    ```
+    @Get()
+    getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+    console.log(filterDto);
+
+    return this.tasksService.getAllTasks();
+    }
+    ```
+
+- @Body()
+  - post 와 같이 body 가 포함되는 요청의 경우 @Body() 를 사용하여 body 로 들어오는 값을 사용한다.
+  - 혹은 특정 값을 명시해서 사용할 수도 있다.
+
+```
+@Post()
+// post 요청의 body 값을 가져오기 위해 @Body 사용
+createTask(@Body() body: Task): Task {
+  const { title, desc } = body;
+  return this.tasksService.createTask(title, desc);
+}
+
   @Post()
-  // post 요청의 body 값을 가져오기 위해 @Body 사용
-  createTask(@Body() body: Task): Task {
-    const { title, desc } = body;
-    return this.tasksService.createTask(title, desc);
-  }
+// post 요청의 body 값을 가져오기 위해 @Body 사용
+createTask(
+  @Body("title") title: string,
+  @Body("desc") desc: string)
+  : Task {
+  return this.tasksService.createTask(title, desc);
+}
+```
 
-    @Post()
-  // post 요청의 body 값을 가져오기 위해 @Body 사용
-  createTask(
-    @Body("title") title: string,
-    @Body("desc") desc: string)
-    : Task {
-    return this.tasksService.createTask(title, desc);
-  }
-  ```
+- @Delete()
 
-  - @Delete()
-
-    - get 과 비슷하게 param 을 지정해서 사용한다.
+  - get 과 비슷하게 param 을 지정해서 사용한다.
 
 ```
   @Delete('/:id')
