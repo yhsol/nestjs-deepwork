@@ -285,5 +285,77 @@ createTask(
   - 더 확장되고 유용하다고 하는데 아직은 type 정의 정도의 느낌이고, 또 type 정의와 같이 사용가능하다.
 
 - 작업 과정
+
   - 기본 구조를 설정한다.
   - 기본 구조가 잡히고 기능 개발을 시작하게 되면 Service 를 정의하고, Controller 에서 연결한다.
+
+- Pipes
+
+  - client - controller - (Pipes) - service
+  - 요청이 들어오고, 그에 따라 validation check 등을 수행한다.
+  - 결과가 성공이면 service 의 메서드로 연결하고,  
+    실패이면 client 로 다시 에러메시지등을 전송.
+
+  - middleware 랑 비슷한 개념인듯.
+  - data transformation or data validation 가능.
+  - original or modified data를 return 한다.
+  - error 출력 등 가능.
+
+  - 기본 Pipes
+
+    - ValidationPipe
+
+      - 정해진 DTO 등에 맞는지 체크.
+
+    - ParseIntPipe
+      - arguments 가 string 인데 number 로 바꾸고 싶거나 할 때 pipes 에서 가능.
+
+- Custom Pipes
+
+  - @Injectable() 사용하여 정의가능.
+  - PipeTransform generic interface 를 구현해야한다.  
+    그러므로, 모든 pipe 는 transform() 메서드를 갖는다.
+    이 메서드는 arguments 를 처리하기위해 NestJs 에 의해 불려진다.
+  - transform() 메서드는 두개의 파라미터를 받는다.
+    - value: 처리된 argument 의 value
+    - metadata: argument 의 metadata 를 갖고있는 객체
+  - transform() 메서드에서 return 된 모든 내용은 route handler 로 전달된다.  
+    예외는 http error response 의 형태로 client 로 다시 전송된다.
+
+  - Pipes can be consumed in different ways.
+
+    - Handler-level pipes
+      - @UsePipes()
+      - 들어오는 요청에 대한 모든 parameters 를 처리한다.
+    - Parameter-level pipes
+      - pipe 가 지정된 특정 parameter 만 처리한다.
+    - Global pipes
+      - application level
+      - application 으로 들어오는 모든 요청에 반영됨.
+      - main.ts 같은 곳에서와 같이 전체에 반영하려고 쓰는 듯.
+
+  - 사용법
+    - validation 같은 경우 dto 에 체크할 요소를 지정하고,
+    - controller 에서 해당 요청에 pipe 를 사용할 것이라고 알린다.
+
+```dto 에 정의
+  import { IsNotEmpty } from 'class-validator';
+
+  export class CreateTaskDto {
+  @IsNotEmpty()
+  title: string;
+
+  @IsNotEmpty()
+  desc: string;
+  }
+
+```
+
+```controller 에 정의
+  @Post()
+  @UsePipes(ValidationPipe)
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    // const { title, desc } = createTaskDto;
+    return this.tasksService.createTask(createTaskDto);
+  }
+```
