@@ -297,6 +297,10 @@ createTask(
     실패이면 client 로 다시 에러메시지등을 전송.
 
   - middleware 랑 비슷한 개념인듯.
+    - update
+      - 미들웨어는 아님. 미들웨어는 따로 있다.
+      - 말그대로 요청에 대한 파이프로써, 그 과정에서 처리를 해주는 것.
+      - 어떻게 보면 개념으로는 비슷한거 같기도 하고.
   - data transformation or data validation 가능.
   - original or modified data를 return 한다.
   - error 출력 등 가능.
@@ -358,4 +362,37 @@ createTask(
     // const { title, desc } = createTaskDto;
     return this.tasksService.createTask(createTaskDto);
   }
+```
+
+- Error handling
+
+  - NotFoundException
+
+        - 기본 제공
+        - 해당 상황에 맞는 에러 메시지 출력해줌
+        - 없으면 빈 페이지
+
+        - 보여주고자 하는 메시지를 NotFoundException(`Task with Id "${id}" not found`) 와 같은 식으로 보여줄 수 있음
+
+        - format
+          - 기본 statusCode, error
+          - 메시지 전달 시 message 추가
+          ```
+            {
+              "statusCode": 404,
+              "message": "Task with Id \"none\" not found",
+              "error": "Not Found"
+            }
+          ```
+
+```
+getTaskById(id: string): Task {
+  const task: Task = this.tasks.find(task => task.id === id);
+
+  if (!task) {
+    throw new NotFoundException();
+  }
+
+  return task;
+}
 ```
