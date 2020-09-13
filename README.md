@@ -396,3 +396,6 @@ getTaskById(id: string): Task {
   return task;
 }
 ```
+
+- dto
+  - 데이터 통신의 형태를 정의
