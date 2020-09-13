@@ -398,4 +398,11 @@ getTaskById(id: string): Task {
 ```
 
 - dto
+
   - 데이터 통신의 형태를 정의
+
+- database 연결
+  - PostgreSQL, typeORM 사용
+  - pgAdmin 에 데이터베이스 생성
+  - typeorm.config.ts 에 데이터베이스 연결 및 설정
+  - app.module.ts 에 typeOrmModule 설정
