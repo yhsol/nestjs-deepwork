@@ -14,6 +14,7 @@ export class TasksService {
   ) {}
   // private 지정을 하지 않으면 해당 Service 를 inject 한 컴포넌트에서 해당 값을 변경 가능
   // 여기서 (원래 Service) 에서만 (메서드를 통해) 변경할 수 있도록 private 지정하는 듯.
+
   // private tasks: Task[] = [];
 
   // getAllTasks(): Task[] {
@@ -45,17 +46,18 @@ export class TasksService {
 
     return found;
   }
-  // getTaskById(id: number): Task {
-  //   // find task in tasks and return task
-  //   // const task: Task = this.tasks.filter(item => item.id === id)[0];
-  //   const task: Task = this.tasks.find(task => task.id === id);
 
-  //   if (!task) {
-  //     throw new NotFoundException(`Task with Id "${id}" not found`);
-  //   }
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    const { title, desc } = createTaskDto;
 
-  //   return task;
-  // }
+    const task = new Task();
+    task.title = title;
+    task.desc = desc;
+    task.status = TaskStatus.OPEN;
+    await task.save();
+
+    return task;
+  }
 
   // createTask(createTaskDto: CreateTaskDto): Task {
   //   // parameter 를 활용해서 task 구성
