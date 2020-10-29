@@ -9,5 +9,6 @@ async function bootstrap() {
   //  그렇기 때문에 작업이 진행되도 main.ts 는 추가 작업이 많지 않은 듯 하다.
   const app = await NestFactory.create(AppModule);
   await app.listen(3000);
+  console.log("server is running at: app.listen(3000)")
 }
 bootstrap();
